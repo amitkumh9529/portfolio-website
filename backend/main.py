@@ -1,4 +1,4 @@
-# backend/main.py
+# backend/main.py - FINAL VERSION
 from fastapi import FastAPI, UploadFile, File, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
@@ -14,7 +14,7 @@ from database import get_db, Document
 app = FastAPI()
 
 # CONFIGURATION
-MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB in bytes
+MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
 ALLOWED_EXTENSIONS = {'.pdf', '.png', '.jpg', '.jpeg', '.tiff', '.bmp'}
 
 app.add_middleware(
@@ -25,22 +25,25 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-def extract_invoice_fields(text):
-    """Enhanced extraction logic with multiple patterns and better parsing"""
+def extract_invoice_data(text):
+    """
+    Robust extraction using multiple strategies
+    Returns best results from all methods
+    """
     
-    # Clean up text - remove extra spaces and normalize
-    text = re.sub(r'\s+', ' ', text)
-    text_lines = text.split('\n')
+    lines = text.split('\n')
     
-    # INVOICE NUMBER
+    # Clean up OCR artifacts - normalize whitespace
+    clean_text = ' '.join(text.split())
+    
+    # Strategy 1: Invoice Number extraction
     invoice_number = None
     patterns = [
-        r'INVOICE\s*#\s*:?\s*([A-Z0-9\-]+)',
-        r'Invoice\s*Number\s*:?\s*([A-Z0-9\-]+)',
-        r'INV\s*#?\s*:?\s*([A-Z0-9\-]+)',
-        r'Invoice\s*#\s*([A-Z0-9\-]+)',
         r'(BPXINV-\d+)',
-        r'([A-Z]{2,}INV-\d+)',
+        r'INVOICE\s*#\s*:?\s*([A-Z0-9\-]+)',
+        r'([A-Z]{2,5}INV-\d+)',
+        r'Invoice\s*(?:No|Number|#)\s*:?\s*([A-Z0-9\-]+)',
+        r'INV[#\-]?\s*:?\s*([A-Z0-9\-]+)',
     ]
     for pattern in patterns:
         match = re.search(pattern, text, re.IGNORECASE)
@@ -48,122 +51,139 @@ def extract_invoice_fields(text):
             invoice_number = match.group(1)
             break
     
-    # DATE
+    # Strategy 2: Date extraction - AGGRESSIVE search with OCR error handling
     date = None
-    date_patterns = [
-        r'DATE\s*:?\s*(\d{1,2}[\.\/\-]\d{1,2}[\.\/\-]\d{4})',
-        r'Invoice\s*Date\s*:?\s*(\d{1,2}[\.\/\-]\d{1,2}[\.\/\-]\d{4})',
-        r'Date\s*:?\s*(\d{1,2}[\.\/\-]\d{1,2}[\.\/\-]\d{4})',
-        r'(\d{1,2}[\.\/\-]\d{1,2}[\.\/\-]\d{4})',
-        r'(\d{1,2}/\d{1,2}/\d{4})',
-        r'(\d{4}[\.\/\-]\d{1,2}[\.\/\-]\d{1,2})',
-    ]
-    for pattern in date_patterns:
-        match = re.search(pattern, text, re.IGNORECASE)
-        if match:
-            date = match.group(1)
-            if any(sep in date for sep in ['.', '/', '-']):
-                parts = re.split(r'[\.\/\-]', date)
-                if len(parts) == 3 and all(p.isdigit() for p in parts):
-                    date_nums = [int(p) for p in parts]
-                    if any(n <= 31 for n in date_nums) and any(n <= 12 for n in date_nums):
-                        break
-            date = None
     
-    # VENDOR
-    vendor = None
-    for i, line in enumerate(text_lines[:15]):
-        line = line.strip()
-        if line and len(line) >= 3 and len(line) < 100:
-            skip_words = ['INVOICE', 'DATE', 'PHONE', 'EMAIL', 'WWW', 'HTTP', 'HTTPS', 
-                         'FAX', 'TEL', 'BILL TO', 'SHIP TO', 'SOLD TO']
-            if not any(skip.lower() in line.lower() for skip in skip_words):
-                if re.search(r'[A-Za-z]{2,}', line):
-                    if not line.replace(' ', '').isdigit():
-                        vendor = line
-                        break
-    
-    # TOTAL
-    total = None
-    total_patterns = [
-        r'TOTAL\s+DUE\s*:?\s*\$?\s*([\d,]+\.?\d{0,2})',
-        r'TOTAL\s*DUE\s*:?\s*\$?\s*([\d,]+\.?\d{0,2})',
-        r'TOTALDUE\s*:?\s*\$?\s*([\d,]+\.?\d{0,2})',
-        r'TOTAL\s*:?\s*\$?\s*([\d,]+\.?\d{0,2})',
-        r'Amount\s+Due\s*:?\s*\$?\s*([\d,]+\.?\d{0,2})',
-        r'AMOUNT\s+DUE\s*:?\s*\$?\s*([\d,]+\.?\d{0,2})',
-        r'Grand\s+Total\s*:?\s*\$?\s*([\d,]+\.?\d{0,2})',
-        r'GRAND\s+TOTAL\s*:?\s*\$?\s*([\d,]+\.?\d{0,2})',
-        r'Balance\s+Due\s*:?\s*\$?\s*([\d,]+\.?\d{0,2})',
-        r'BALANCE\s+DUE\s*:?\s*\$?\s*([\d,]+\.?\d{0,2})',
+    # Method 1: Find standard date patterns (DD.MM.YYYY, DD/MM/YYYY, etc.)
+    date_formats = [
+        r'(\d{2}\.\d{2}\.\d{4})',      # DD.MM.YYYY (European) - like 23.05.2021
+        r'(\d{1,2}\.\d{1,2}\.\d{4})',  # D.M.YYYY flexible
+        r'(\d{2}/\d{2}/\d{4})',         # DD/MM/YYYY or MM/DD/YYYY
+        r'(\d{1,2}/\d{1,2}/\d{4})',     # D/M/YYYY flexible
+        r'(\d{2}-\d{2}-\d{4})',         # DD-MM-YYYY
+        r'(\d{4}-\d{2}-\d{2})',         # YYYY-MM-DD (ISO)
     ]
     
-    for pattern in total_patterns:
-        match = re.search(pattern, text, re.IGNORECASE)
-        if match:
-            total = match.group(1)
+    for fmt in date_formats:
+        matches = re.findall(fmt, text)
+        for potential_date in matches:
+            parts = re.split(r'[.\-/]', potential_date)
+            try:
+                nums = [int(p) for p in parts]
+                if len(nums) == 3:
+                    if nums[0] > 1900 and nums[0] < 2100:
+                        if 1 <= nums[1] <= 12 and 1 <= nums[2] <= 31:
+                            date = potential_date
+                            break
+                    elif nums[2] > 1900 and nums[2] < 2100:
+                        if 1 <= nums[0] <= 31 and 1 <= nums[1] <= 12:
+                            date = potential_date
+                            break
+            except:
+                continue
+        if date:
             break
     
-    if not total:
-        for line in text_lines:
-            if 'TOTAL' in line.upper() and 'DUE' in line.upper():
-                numbers = re.findall(r'[\d,]+\.?\d{0,2}', line)
-                if numbers:
-                    total = numbers[-1]
-                    break
+    # Method 2: Handle OCR-corrupted dates near DATE: label
+    # e.g., "DATE: 2 05 5021" should be "23.05.2021" or "DATE: 23.05." with year nearby
+    if not date:
+        # Look for DATE: followed by space-separated numbers (OCR corruption)
+        date_match = re.search(r'DATE\s*:\s*(\d{1,2})\s+(\d{1,2})\s+(\d{4})', text, re.IGNORECASE)
+        if date_match:
+            day, month, year = date_match.group(1), date_match.group(2), date_match.group(3)
+            # Fix common OCR errors: 5021 -> 2021, 5022 -> 2022
+            if year.startswith('50'):
+                year = '20' + year[2:]
+            date = f"{day.zfill(2)}.{month.zfill(2)}.{year}"
     
-    if not total:
-        subtotal_match = re.search(r'SUBTOTAL\s*:?\s*\$?\s*([\d,]+\.?\d{0,2})', text, re.IGNORECASE)
-        if subtotal_match:
-            total = subtotal_match.group(1)
+    # Method 3: Look for partial date like "23.05." and find year nearby
+    if not date:
+        partial_match = re.search(r'(\d{1,2})\.(\d{1,2})\.\s*$', text, re.MULTILINE)
+        if not partial_match:
+            partial_match = re.search(r'(\d{1,2})\.(\d{1,2})\.\s*\n', text)
+        if partial_match:
+            day, month = partial_match.group(1), partial_match.group(2)
+            # Look for a 4-digit year nearby (within 50 chars)
+            start_pos = max(0, partial_match.start() - 50)
+            end_pos = min(len(text), partial_match.end() + 50)
+            nearby_text = text[start_pos:end_pos]
+            year_match = re.search(r'(20\d{2}|50\d{2})', nearby_text)
+            if year_match:
+                year = year_match.group(1)
+                # Fix OCR error: 5021 -> 2021
+                if year.startswith('50'):
+                    year = '20' + year[2:]
+                date = f"{day.zfill(2)}.{month.zfill(2)}.{year}"
     
-    if total:
-        total = total.strip()
+    # Method 4: Standard date near label as final backup
+    if not date:
+        date_label_patterns = [
+            r'(?:Invoice\s*)?Date\s*[:\s]+(\d{1,2}[.\-/]\d{1,2}[.\-/]\d{2,4})',
+            r'Dated?\s*[:\s]+(\d{1,2}[.\-/]\d{1,2}[.\-/]\d{2,4})',
+        ]
+        for pattern in date_label_patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                date = match.group(1)
+                break
     
-    return {
-        'invoice_number': invoice_number,
-        'date': date,
-        'vendor_name': vendor,
-        'total': total
-    }
-
-def extract_from_lines(text):
-    """Alternative extraction by analyzing line by line"""
-    lines = text.split('\n')
-    
-    invoice_number = None
-    date = None
+    # Strategy 3: Vendor name - first clean text line
     vendor = None
-    total = None
-    
-    for i, line in enumerate(lines):
+    for i, line in enumerate(lines[:15]):
         line = line.strip()
-        if not line:
+        if not line or len(line) < 3:
+            continue
+        if line.replace(' ', '').replace('-', '').replace('.', '').isdigit():
             continue
         
-        if not invoice_number:
-            if 'INVOICE' in line.upper() and '#' in line:
-                match = re.search(r'#\s*([A-Z0-9\-]+)', line)
-                if match:
-                    invoice_number = match.group(1)
+        skip_keywords = ['INVOICE', 'DATE', 'PHONE', 'FAX', 'EMAIL', 'WWW', 
+                        'HTTP', 'BILL TO', 'SHIP TO', 'WE LOVE', 'CHEMISTRY',
+                        'ADDRESS', 'TOTAL', 'AMOUNT', 'TAX', 'SUBTOTAL']
+        if any(keyword in line.upper() for keyword in skip_keywords):
+            continue
         
-        if not date:
-            if 'DATE' in line.upper() and ':' in line:
-                after_colon = line.split(':', 1)[1].strip()
-                date_match = re.search(r'(\d{1,2}[\.\/\-]\d{1,2}[\.\/\-]\d{4})', after_colon)
-                if date_match:
-                    date = date_match.group(1)
+        if re.search(r'[A-Za-z]{2,}', line) and len(line) <= 50:
+            vendor = line
+            break
+    
+    # Strategy 4: Total Amount - FIND LARGEST MONETARY AMOUNT (Primary Strategy)
+    # The grand total is almost always the largest number in an invoice
+    total = None
+    
+    # Find ALL monetary amounts in the document (with decimal points)
+    all_amounts = re.findall(r'(\d{1,3}(?:,\d{3})*\.\d{2}|\d+\.\d{2})', text)
+    
+    if all_amounts:
+        # Convert to floats and collect
+        amounts_float = []
+        for amt in all_amounts:
+            try:
+                clean_amt = amt.replace(',', '')
+                val = float(clean_amt)
+                # Filter out likely non-monetary values (too small or looks like a date/phone)
+                if val >= 1.00:  # At least $1
+                    amounts_float.append((clean_amt, val))
+            except:
+                pass
         
-        if not vendor and i < 5:
-            if len(line) >= 3 and not any(x in line.upper() for x in ['INVOICE', 'DATE', 'PHONE', 'WWW']):
-                if re.search(r'[A-Za-z]', line):
-                    vendor = line
-        
-        if not total:
-            if 'TOTAL' in line.upper() and 'DUE' in line.upper():
-                numbers = re.findall(r'([\d,]+\.?\d{2})', line)
-                if numbers:
-                    total = max(numbers, key=lambda x: float(x.replace(',', '')))
+        if amounts_float:
+            # Get the LARGEST amount - this is most likely the grand total
+            max_amount = max(amounts_float, key=lambda x: x[1])
+            total = max_amount[0]
+    
+    # Fallback: Look for amounts without decimal (like "6610" or "6,610")
+    if not total:
+        # Try to find numbers near "Total" keywords
+        total_line_patterns = [
+            r'(?:Grand\s*)?Total[:\s]+\$?\s*([\d,]+(?:\.\d{2})?)',
+            r'Amount\s*Due[:\s]+\$?\s*([\d,]+(?:\.\d{2})?)',
+            r'Balance[:\s]+\$?\s*([\d,]+(?:\.\d{2})?)',
+        ]
+        for pattern in total_line_patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                total = match.group(1).replace(',', '')
+                break
     
     return {
         'invoice_number': invoice_number,
@@ -173,12 +193,12 @@ def extract_from_lines(text):
     }
 
 def validate_file(file: UploadFile):
-    """Validate file size and type"""
+    """Validate file type"""
     file_ext = '.' + file.filename.split('.')[-1].lower()
     if file_ext not in ALLOWED_EXTENSIONS:
         raise HTTPException(
             status_code=400, 
-            detail=f"File type not allowed. Allowed types: {', '.join(ALLOWED_EXTENSIONS)}"
+            detail=f"File type not allowed. Allowed: {', '.join(ALLOWED_EXTENSIONS)}"
         )
     return True
 
@@ -186,43 +206,48 @@ def validate_file(file: UploadFile):
 async def process_document(file: UploadFile = File(...), db: Session = Depends(get_db)):
     start_time = time.time()
     
+    # Validate
     validate_file(file)
     
+    # Read file
     contents = await file.read()
     file_size = len(contents)
     
+    # Check size
     if file_size > MAX_FILE_SIZE:
         raise HTTPException(
             status_code=400,
-            detail=f"File too large. Maximum size is {MAX_FILE_SIZE / (1024*1024)}MB"
+            detail=f"File too large. Max: {MAX_FILE_SIZE / (1024*1024)}MB"
         )
     
     if file_size == 0:
         raise HTTPException(status_code=400, detail="Empty file")
     
     try:
+        # Convert PDF to image - process ALL pages
         if file.filename.lower().endswith('.pdf'):
             from pdf2image import convert_from_bytes
             images = convert_from_bytes(contents, dpi=300)
-            image = images[0]
+            
+            # OCR ALL pages and combine text
+            custom_config = r'--oem 3 --psm 6'
+            all_text = []
+            for img in images:
+                page_text = pytesseract.image_to_string(img, config=custom_config)
+                all_text.append(page_text)
+            text = '\n'.join(all_text)
         else:
             image = Image.open(io.BytesIO(contents))
+            custom_config = r'--oem 3 --psm 6'
+            text = pytesseract.image_to_string(image, config=custom_config)
         
-        custom_config = r'--oem 3 --psm 6'
-        text = pytesseract.image_to_string(image, config=custom_config)
+        # Extract fields
+        extracted = extract_invoice_data(text)
         
-        method1 = extract_invoice_fields(text)
-        method2 = extract_from_lines(text)
-        
-        extracted = {
-            'invoice_number': method1['invoice_number'] or method2['invoice_number'],
-            'date': method1['date'] or method2['date'],
-            'vendor_name': method1['vendor_name'] or method2['vendor_name'],
-            'total': method1['total'] or method2['total']
-        }
-        
+        # Calculate processing time
         processing_time = time.time() - start_time
         
+        # Save to database
         doc = Document(
             filename=file.filename,
             invoice_number=extracted['invoice_number'],
@@ -256,6 +281,7 @@ async def process_document(file: UploadFile = File(...), db: Session = Depends(g
     except Exception as e:
         processing_time = time.time() - start_time
         
+        # Save failed document
         doc = Document(
             filename=file.filename,
             status="failed",
@@ -326,6 +352,7 @@ def get_stats(db: Session = Depends(get_db)):
     total_docs = db.query(Document).count()
     successful_docs = db.query(Document).filter(Document.status == "success").count()
     
+    # Calculate total amount
     docs_with_total = db.query(Document).filter(Document.total.isnot(None)).all()
     total_amount = 0
     for doc in docs_with_total:
@@ -336,9 +363,11 @@ def get_stats(db: Session = Depends(get_db)):
         except:
             pass
     
+    # Average processing time
     avg_time_docs = db.query(Document).filter(Document.processing_time.isnot(None)).all()
     avg_processing_time = sum([d.processing_time for d in avg_time_docs]) / len(avg_time_docs) if avg_time_docs else 0
     
+    # Accuracy rate
     docs_with_invoice = db.query(Document).filter(Document.invoice_number.isnot(None)).count()
     accuracy_rate = (docs_with_invoice / total_docs * 100) if total_docs > 0 else 0
     
@@ -361,30 +390,35 @@ def delete_document(document_id: int, db: Session = Depends(get_db)):
     db.commit()
     return {"message": "Document deleted successfully"}
 
-@app.post("/api/debug-text")
-async def debug_text(file: UploadFile = File(...)):
-    """Debug endpoint to see raw OCR output line by line"""
+# Debug endpoint
+@app.post("/api/debug")
+async def debug_ocr(file: UploadFile = File(...)):
+    """Debug OCR output"""
     contents = await file.read()
     
     if file.filename.lower().endswith('.pdf'):
         from pdf2image import convert_from_bytes
         images = convert_from_bytes(contents, dpi=300)
-        image = images[0]
+        # Process ALL pages
+        all_text = []
+        for img in images:
+            page_text = pytesseract.image_to_string(img)
+            all_text.append(page_text)
+        text = '\n'.join(all_text)
+        num_pages = len(images)
     else:
         image = Image.open(io.BytesIO(contents))
+        text = pytesseract.image_to_string(image)
+        num_pages = 1
     
-    text = pytesseract.image_to_string(image)
-    lines = text.split('\n')
+    extracted = extract_invoice_data(text)
     
-    numbered_lines = [f"Line {i+1}: '{line}'" for i, line in enumerate(lines[:30])]
-    
-    method1 = extract_invoice_fields(text)
-    method2 = extract_from_lines(text)
+    lines = text.split('\n')[:50]
     
     return {
-        "total_lines": len(lines),
-        "first_30_lines": numbered_lines,
-        "method_1_results": method1,
-        "method_2_results": method2,
-        "full_text_preview": text[:1000]
+        "extracted": extracted,
+        "num_pages": num_pages,
+        "first_50_lines": [f"{i+1}: {line}" for i, line in enumerate(lines)],
+        "raw_text_length": len(text),
+        "raw_preview": text[:1000]
     }
