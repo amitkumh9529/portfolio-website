@@ -815,23 +815,30 @@ function Certifications() {
 
 function GithubStats() {
   const [activity, setActivity] = useState([]);
-  const GITHUB_USERNAME = "YOUR_GITHUB_USERNAME";
-  const LEETCODE_USERNAME = "YOUR_LEETCODE_USERNAME";
+  const GITHUB_USERNAME = "amitkumh9529";
+  const LEETCODE_USERNAME = "dexteramit";
 
   useEffect(() => {
     async function load() {
       try {
-        // GitHub public events (recent)
-        const gh = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/events/public`);
-        const ghData = await gh.json();
-
         const map = {};
 
-        if (Array.isArray(ghData)) {
-          ghData.forEach(ev => {
-            const d = ev.created_at?.slice(0,10);
-            if (!d) return;
-            map[d] = (map[d] || 0) + 1;
+        // FULL YEAR GitHub contribution graph via GraphQL proxy
+        const gh = await fetch(
+          `https://github-contributions-api.jogruber.de/v4/${GITHUB_USERNAME}`
+        );
+        const ghData = await gh.json();
+
+        if (ghData?.contributions) {
+          ghData.contributions.forEach(day => {
+            if (!day?.date) return;
+            const level =
+              day.count === 0 ? 0 :
+              day.count < 2 ? 1 :
+              day.count < 5 ? 2 :
+              day.count < 10 ? 3 : 4;
+
+            map[day.date] = Math.max(map[day.date] || 0, level);
           });
         }
 
@@ -844,7 +851,7 @@ function GithubStats() {
             const cal = JSON.parse(lcData.submissionCalendar);
             Object.entries(cal).forEach(([ts,count]) => {
               const d = new Date(Number(ts)*1000).toISOString().slice(0,10);
-              map[d] = (map[d] || 0) + Math.min(Number(count),5);
+              map[d] = Math.max(map[d] || 0, Math.min(Number(count),4)); // LeetCode OR GitHub
             });
           }
         } catch(e){}
@@ -874,7 +881,7 @@ function GithubStats() {
           Combined <GradientText>Developer Activity</GradientText>
         </h2>
         <p style={{ color:"#64748b", marginBottom:30 }}>
-          GitHub commits + LeetCode submissions merged into one contribution calendar
+          Shows activity whenever GitHub OR LeetCode has activity
         </p>
 
         <div style={{
@@ -883,28 +890,50 @@ function GithubStats() {
           border:"1px solid rgba(255,255,255,0.07)"
         }}>
           <div style={{ fontSize:13, color:"#94a3b8", marginBottom:16, fontWeight:600 }}>
-            Combined Activity Heatmap
+            GitHub + LeetCode Activity Grid
           </div>
 
           <div style={{
-            display:"grid",
-            gridTemplateColumns:"repeat(53, 12px)",
-            gridAutoFlow:"column",
-            gap:3,
-            overflowX:"auto"
+            display: "flex",
+            gap: 3,
+            overflowX: "auto",
+            paddingBottom: 6,
           }}>
-            {activity.map((d,i)=>(
+            {Array.from({ length: 53 }).map((_, week) => (
               <div
-                key={i}
-                title={`${d.date} | Activity: ${d.val}`}
+                key={week}
                 style={{
-                  width:11,
-                  height:11,
-                  borderRadius:2,
-                  background: COLORS[d.val],
-                  border:"1px solid rgba(255,255,255,0.04)"
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 3,
                 }}
-              />
+              >
+                {activity
+                  .slice(week * 7, week * 7 + 7)
+                  .map((d, i) => (
+                    <div
+                      key={i}
+                      title={`${d.date}\nGitHub + LeetCode activity: ${d.val}`}
+                      style={{
+                        width: 11,
+                        height: 11,
+                        borderRadius: 2,
+                        background: COLORS[d.val],
+                        border: "1px solid rgba(255,255,255,0.05)",
+                        transition: "all 0.2s ease",
+                        cursor: "pointer",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = "scale(1.18)";
+                        e.currentTarget.style.borderColor = "#39d353";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = "scale(1)";
+                        e.currentTarget.style.borderColor = "rgba(255,255,255,0.05)";
+                      }}
+                    />
+                  ))}
+              </div>
             ))}
           </div>
 
