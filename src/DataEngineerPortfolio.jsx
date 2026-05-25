@@ -812,103 +812,127 @@ function Certifications() {
   );
 }
 
+
 function GithubStats() {
-  const ref = useRef(null);
-  const visible = useInView(ref);
-  const weeks = 52; const days = 7;
-  const grid = Array.from({ length: weeks }, (_, wi) =>
-    Array.from({ length: days }, (_, di) => {
-      const r = Math.random();
-      const recency = wi / weeks;
-      const val = r < 0.35 ? 0 : r < 0.55 ? 1 : r < 0.72 ? 2 : r < 0.87 ? 3 : 4;
-      return val * (0.4 + recency * 0.6) > 1.5 ? Math.round(val * (0.4 + recency * 0.6)) : val;
-    })
-  );
+  const [activity, setActivity] = useState([]);
+  const GITHUB_USERNAME = "YOUR_GITHUB_USERNAME";
+  const LEETCODE_USERNAME = "YOUR_LEETCODE_USERNAME";
+
+  useEffect(() => {
+    async function load() {
+      try {
+        // GitHub public events (recent)
+        const gh = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/events/public`);
+        const ghData = await gh.json();
+
+        const map = {};
+
+        if (Array.isArray(ghData)) {
+          ghData.forEach(ev => {
+            const d = ev.created_at?.slice(0,10);
+            if (!d) return;
+            map[d] = (map[d] || 0) + 1;
+          });
+        }
+
+        // LeetCode calendar API proxy
+        try {
+          const lc = await fetch(`https://leetcode-stats-api.herokuapp.com/${LEETCODE_USERNAME}`);
+          const lcData = await lc.json();
+
+          if (lcData?.submissionCalendar) {
+            const cal = JSON.parse(lcData.submissionCalendar);
+            Object.entries(cal).forEach(([ts,count]) => {
+              const d = new Date(Number(ts)*1000).toISOString().slice(0,10);
+              map[d] = (map[d] || 0) + Math.min(Number(count),5);
+            });
+          }
+        } catch(e){}
+
+        const days = [];
+        for(let i=364;i>=0;i--){
+          const d = new Date();
+          d.setDate(d.getDate()-i);
+          const key = d.toISOString().slice(0,10);
+          days.push({date:key,val:Math.min(map[key]||0,4)});
+        }
+        setActivity(days);
+      } catch(err){
+        console.log(err);
+      }
+    }
+    load();
+  }, []);
+
   const COLORS = ["#0d1117","#0e4429","#006d32","#26a641","#39d353"];
 
   return (
-    <section id="github" ref={ref} style={{ padding:"100px 24px", background:"#070710" }}>
+    <section id="github" style={{ padding:"100px 24px", background:"#070710" }}>
       <div style={{ maxWidth:1100, margin:"0 auto" }}>
         <SectionTag>Activity</SectionTag>
-        <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:"clamp(28px,4vw,44px)", fontWeight:800, color:"#f1f5f9", marginBottom:48 }}>
-          GitHub <GradientText>& LeetCode stats</GradientText>
+        <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:"clamp(28px,4vw,44px)", fontWeight:800, color:"#f1f5f9", marginBottom:20 }}>
+          Combined <GradientText>Developer Activity</GradientText>
         </h2>
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:20 }}>
-          {/* Contribution graph */}
-          <div style={{
-            gridColumn:"1/-1", padding:28, borderRadius:16,
-            background:"rgba(255,255,255,0.02)", border:"1px solid rgba(255,255,255,0.07)",
-            transform: visible ? "translateY(0)" : "translateY(20px)", opacity: visible ? 1 : 0, transition:"all 0.6s ease",
-          }}>
-            <div style={{ fontSize:13, color:"#94a3b8", marginBottom:16, fontWeight:600 }}>alexchen · 847 contributions in the last year</div>
-            <div style={{ display:"flex", gap:3, overflowX:"auto", paddingBottom:4 }}>
-              {grid.map((week, wi) => (
-                <div key={wi} style={{ display:"flex", flexDirection:"column", gap:3 }}>
-                  {week.map((val, di) => (
-                    <div key={di} style={{
-                      width:11, height:11, borderRadius:2,
-                      background: COLORS[Math.min(val, 4)],
-                      border:"1px solid rgba(255,255,255,0.05)",
-                    }} title={`${val} contributions`} />
-                  ))}
-                </div>
-              ))}
-            </div>
-            <div style={{ display:"flex", alignItems:"center", gap:6, marginTop:12 }}>
-              <span style={{ fontSize:11, color:"#475569" }}>Less</span>
-              {COLORS.map((c,i) => <div key={i} style={{ width:11, height:11, borderRadius:2, background:c, border:"1px solid rgba(255,255,255,0.05)" }} />)}
-              <span style={{ fontSize:11, color:"#475569" }}>More</span>
-            </div>
+        <p style={{ color:"#64748b", marginBottom:30 }}>
+          GitHub commits + LeetCode submissions merged into one contribution calendar
+        </p>
+
+        <div style={{
+          padding:28, borderRadius:16,
+          background:"rgba(255,255,255,0.02)",
+          border:"1px solid rgba(255,255,255,0.07)"
+        }}>
+          <div style={{ fontSize:13, color:"#94a3b8", marginBottom:16, fontWeight:600 }}>
+            Combined Activity Heatmap
           </div>
 
-          {/* GitHub Stats */}
-          {[
-            { label:"Total Stars Earned", val:"128", icon:"⭐", color:"#f59e0b" },
-            { label:"Total Commits (2024)", val:"347", icon:"📦", color:"#00d9ff" },
-            { label:"Pull Requests", val:"42", icon:"🔀", color:"#8b5cf6" },
-            { label:"Issues Opened", val:"19", icon:"🐛", color:"#10b981" },
-          ].map(({ label, val, icon, color }, i) => (
-            <div key={label} style={{
-              padding:24, borderRadius:14,
-              background:"rgba(255,255,255,0.02)", border:"1px solid rgba(255,255,255,0.07)",
-              transform: visible ? "translateY(0)" : "translateY(20px)",
-              opacity: visible ? 1 : 0, transition:`all 0.6s ease ${0.1+i*0.1}s`,
-              display:"flex", alignItems:"center", gap:16,
-            }}>
-              <div style={{ width:44, height:44, borderRadius:12, background:`${color}18`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:20 }}>{icon}</div>
-              <div>
-                <div style={{ fontFamily:"'Syne',sans-serif", fontSize:28, fontWeight:800, color:"#f1f5f9" }}>{val}</div>
-                <div style={{ fontSize:12, color:"#64748b" }}>{label}</div>
-              </div>
-            </div>
-          ))}
-
-          {/* LeetCode */}
           <div style={{
-            gridColumn:"1/-1", padding:28, borderRadius:16,
-            background:"rgba(255,255,255,0.02)", border:"1px solid rgba(255,255,255,0.07)",
-            transform: visible ? "translateY(0)" : "translateY(20px)", opacity: visible ? 1 : 0, transition:"all 0.6s ease 0.5s",
+            display:"grid",
+            gridTemplateColumns:"repeat(53, 12px)",
+            gridAutoFlow:"column",
+            gap:3,
+            overflowX:"auto"
           }}>
-            <div style={{ fontSize:13, color:"#94a3b8", marginBottom:20, fontWeight:600 }}>🔢 LeetCode Problem Solving</div>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:16 }}>
-              {[{ level:"Easy", solved:124, total:800, color:"#10b981" },{ level:"Medium", solved:68, total:1700, color:"#f59e0b" },{ level:"Hard", solved:14, total:700, color:"#f43f5e" }].map(({ level, solved, total, color }) => (
-                <div key={level}>
-                  <div style={{ display:"flex", justifyContent:"space-between", marginBottom:8 }}>
-                    <span style={{ fontSize:12, color, fontWeight:700 }}>{level}</span>
-                    <span style={{ fontSize:12, color:"#94a3b8" }}>{solved}/{total}</span>
-                  </div>
-                  <div style={{ height:6, borderRadius:3, background:"rgba(255,255,255,0.05)" }}>
-                    <div style={{ height:"100%", borderRadius:3, background:`linear-gradient(90deg,${color},${color}80)`, width:`${(solved/total*100).toFixed(1)}%`, transition:"width 1s ease" }} />
-                  </div>
-                </div>
-              ))}
-            </div>
+            {activity.map((d,i)=>(
+              <div
+                key={i}
+                title={`${d.date} | Activity: ${d.val}`}
+                style={{
+                  width:11,
+                  height:11,
+                  borderRadius:2,
+                  background: COLORS[d.val],
+                  border:"1px solid rgba(255,255,255,0.04)"
+                }}
+              />
+            ))}
+          </div>
+
+          <div style={{ display:"flex", alignItems:"center", gap:6, marginTop:14 }}>
+            <span style={{ fontSize:11, color:"#475569" }}>Less</span>
+            {COLORS.map((c,i)=>(
+              <div key={i} style={{width:11,height:11,borderRadius:2,background:c}} />
+            ))}
+            <span style={{ fontSize:11, color:"#475569" }}>More</span>
+          </div>
+
+          <div style={{
+            marginTop:20,
+            padding:14,
+            borderRadius:10,
+            background:"rgba(0,217,255,0.04)",
+            border:"1px solid rgba(0,217,255,0.12)",
+            fontSize:12,
+            color:"#94a3b8"
+          }}>
+            Replace <strong>YOUR_GITHUB_USERNAME</strong> and <strong>YOUR_LEETCODE_USERNAME</strong> inside GithubStats().
           </div>
         </div>
       </div>
     </section>
   );
 }
+
 
 function Blog() {
   const ref = useRef(null);
