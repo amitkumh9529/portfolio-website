@@ -250,10 +250,17 @@ function GradientText({ children, style = {} }) {
 function Navbar({ active }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     const h = () => setScrolled(window.scrollY > 40);
+    const onResize = () => setIsMobile(window.innerWidth < 900);
+    onResize();
     window.addEventListener("scroll", h);
-    return () => window.removeEventListener("scroll", h);
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("scroll", h);
+      window.removeEventListener("resize", onResize);
+    };
   }, []);
   const links = ["About","Skills","Projects","Architecture","Experience","Blog","Contact"];
   const scroll = (id) => { document.getElementById(id.toLowerCase())?.scrollIntoView({ behavior:"smooth" }); setOpen(false); };
@@ -269,7 +276,7 @@ function Navbar({ active }) {
         <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:14, color:"#00d9ff", fontWeight:700 }}>
           {"<"}<span style={{ color:"#f1f5f9" }}>Alex Chen</span>{" />"}
         </div>
-        <div style={{ display:"flex", gap:4 }}>
+        <div style={{ display:isMobile ? "none" : "flex", gap:4 }}>
           {links.map(l => (
             <button key={l} onClick={() => scroll(l)}
               style={{
@@ -283,13 +290,62 @@ function Navbar({ active }) {
             >{l}</button>
           ))}
         </div>
-        <a href="#" style={{
+        <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+        {isMobile && (
+          <button
+            onClick={() => setOpen(v => !v)}
+            aria-label="Toggle menu"
+            style={{
+              background:"rgba(255,255,255,0.05)",
+              border:"1px solid rgba(255,255,255,0.12)",
+              color:"#e2e8f0",
+              borderRadius:10,
+              width:40,
+              height:40,
+              fontSize:18,
+              cursor:"pointer"
+            }}
+          >
+            {open ? "✕" : "☰"}
+          </button>
+        )}
+        <a href="#contact" style={{
           padding:"8px 20px", borderRadius:99,
           background:"linear-gradient(135deg,#00d9ff,#8b5cf6)",
           color:"#fff", fontSize:13, fontWeight:600, textDecoration:"none",
           boxShadow:"0 0 20px rgba(0,217,255,0.25)",
         }}>Hire Me</a>
+        </div>
       </div>
+      {isMobile && open && (
+        <div style={{
+          margin:"0 16px 14px",
+          border:"1px solid rgba(255,255,255,0.08)",
+          borderRadius:14,
+          background:"rgba(7,7,16,0.96)",
+          backdropFilter:"blur(14px)",
+          padding:10
+        }}>
+          {links.map(l => (
+            <button
+              key={`mobile-${l}`}
+              onClick={() => scroll(l)}
+              style={{
+                width:"100%",
+                textAlign:"left",
+                padding:"10px 12px",
+                color:"#cbd5e1",
+                background:"transparent",
+                border:"none",
+                borderRadius:8,
+                fontSize:14
+              }}
+            >
+              {l}
+            </button>
+          ))}
+        </div>
+      )}
     </nav>
   );
 }
@@ -354,7 +410,7 @@ function Hero() {
         }}>
           {[
             { label:"View Projects", primary:true, href:"#projects" },
-            { label:"Download Resume", primary:false, href:"#" },
+            { label:"Download Resume", primary:false, href:"#contact" },
             { label:"Contact Me", primary:false, href:"#contact" },
           ].map(({ label, primary, href }) => (
             <a key={label} href={href}
@@ -376,11 +432,11 @@ function Hero() {
           ))}
         </div>
         <div style={{
-          marginTop:60, display:"flex", justifyContent:"center", gap:40,
+          marginTop:60, display:"flex", justifyContent:"center", gap:40, flexWrap:"wrap",
           transform: mounted ? "translateY(0)" : "translateY(20px)",
           opacity: mounted ? 1 : 0, transition:"all 0.7s ease 0.5s",
         }}>
-          {[["4+","Projects Built"],["2M+","Events/sec Processed"],["3","Cloud Certifications"]].map(([n,l]) => (
+          {[["4+","Projects Built"],["2M+","Events/hr Processed"],["3","Cloud Certifications"]].map(([n,l]) => (
             <div key={l} style={{ textAlign:"center" }}>
               <div style={{ fontSize:28, fontWeight:800, fontFamily:"'Syne',sans-serif", color:"#f1f5f9" }}>{n}</div>
               <div style={{ fontSize:11, color:"#64748b", letterSpacing:"0.05em", marginTop:2 }}>{l}</div>
