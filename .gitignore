@@ -1,34 +1,82 @@
-# Dependencies
+# ##############################################################################
+# Portfolio Website Project .gitignore
+# Covers Node.js/Vite, TypeScript, Python (workspace), OS files, and IDEs.
+# ##############################################################################
+
+# --- Node.js & Build Outputs ---
 node_modules/
+/dist
+/build
+/out
+.next/
+.nuxt/
+.svelte-kit/
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+vite.config.ts.timestamp-*
+vite.config.js.timestamp-*
 
-# Build output
-dist/
-build/
-
-# Logs
+# --- Logs ---
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Environment variables
+# --- Coverage and Testing ---
+coverage/
+htmlcov/
+.coverage
+.coverage.*
+.pytest_cache/
+.tox/
+.hypothesis/
+
+# --- Environment and Secrets ---
+# Keep local environment configs secure
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+.env*.local
+# Avoid ignoring the template example file
+!.env.example
 
-# OS files
-.DS_Store
-Thumbs.db
+# --- Python Virtual Environments & Caches ---
+# (Included since workspace is inside a Python folder)
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
 
-# IDE / Editor
+# --- IDEs and Editors ---
 .vscode/
 .idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swo
+*~
 
-# Vite cache
-.vite/
+# --- Operating System Files ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-# Temporary files
-*.tmp
-*.temp
+# --- Antigravity AI Agent ---
+.antigravity/
