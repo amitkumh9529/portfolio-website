@@ -1,6 +1,6 @@
-# Amit Halder | Senior Data Engineer Portfolio
+# Amit Halder | Data Engineer Portfolio
 
-A modern, high-performance personal portfolio website for **Amit Halder**, Senior Data Engineer. Featuring responsive frosted glassmorphism aesthetics and an interactive **300-frame scroll-driven canvas background animation** that scrubs smoothly with inertial physics.
+A modern, high-performance personal portfolio website for **Amit Halder**, Data Engineer. Featuring responsive frosted glassmorphism aesthetics and an interactive **300-frame scroll-driven canvas background animation** that scrubs smoothly with inertial physics.
 
 ![Portfolio Preview](679ef4554f2f0f691fb8c0f1dd1a65ba.jpg)
 
