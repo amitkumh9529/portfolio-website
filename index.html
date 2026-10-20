@@ -1,13 +1,603 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Google AI Studio App</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amit Halder | Senior Data Engineer Portfolio</title>
+  <meta name="description" content="Portfolio of Amit Halder, Senior Data Engineer specializing in distributed data pipelines, lakehouse architectures, PySpark, Kafka, and cloud platforms.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
 
+  <!-- Preloader Screen -->
+  <div id="loader" class="loader-overlay">
+    <div class="loader-content">
+      <div class="loader-spinner"></div>
+      <div class="loader-text-wrap">
+        <span class="loader-label">Loading Data Platform</span>
+        <span id="loader-progress" class="loader-percentage">0%</span>
+      </div>
+      <div class="loader-track">
+        <div id="loader-bar" class="loader-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Background Fixed Canvas with Smooth Scroll Animation -->
+  <div class="bg-canvas-wrapper" aria-hidden="true">
+    <canvas id="hero-canvas"></canvas>
+    <div class="canvas-vignette"></div>
+  </div>
+
+  <!-- Main Web Page Content -->
+  <div class="page-content">
+
+    <!-- Top Navigation Bar -->
+    <header class="navbar" id="navbar">
+      <div class="nav-container">
+        <a href="#hero" class="nav-brand">
+          <span class="brand-code">&lt;/&gt;</span>
+          <span class="brand-text">DataCraft</span>
+        </a>
+
+        <nav class="nav-links">
+          <a href="#hero" class="nav-link active">Home</a>
+          <a href="#about" class="nav-link">About</a>
+          <a href="#skills" class="nav-link">Skills</a>
+          <a href="#projects" class="nav-link">Projects</a>
+          <a href="#contact" class="nav-link">Contact</a>
+        </nav>
+
+        <a href="#contact" class="btn btn-primary nav-cta">
+          <span>Hire Me</span>
+          <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+        </a>
+      </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero-section" id="hero">
+      <div class="hero-content">
+        <div class="hero-left">
+          <div class="badge-pill">
+            <span class="badge-dot"></span>
+            <span>I'M A DATA ENGINEER</span>
+          </div>
+
+          <h1 class="hero-title">
+            Hi, I'm <span class="text-gradient">Amit Halder</span><br>
+            I build high-scale data systems.
+          </h1>
+
+          <p class="hero-desc">
+            Passionate data engineer specializing in building distributed streaming architectures,
+            petabyte-scale lakehouses, and mission-critical ETL pipelines that fuel modern AI & analytics.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#projects" class="btn btn-primary">
+              <span>View My Work</span>
+              <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+            </a>
+            <a href="#contact" class="btn btn-secondary">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+              <span>Download CV</span>
+            </a>
+          </div>
+
+          <!-- Technologies I Work With -->
+          <div class="hero-tech-stack">
+            <span class="tech-stack-label">TECHNOLOGIES I WORK WITH</span>
+            <div class="tech-pills-row">
+              <span class="tech-badge" title="Python">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 6.48 4.4 6.48 4.4v2.5h5.62v.8H4.3S2 7.7 2 13.2s2 5.5 2 5.5h1.7v-2.4s-.1-2.9 2.9-2.9h5v-.8H8v-2.5h8.9s2.9.2 2.9-2.7V4.4S20 2 12 2zm-1.8 1.9a.9.9 0 1 1 0 1.8.9.9 0 0 1 0-1.8z"/></svg>
+                Python
+              </span>
+              <span class="tech-badge" title="Apache Spark">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l1.8 4.2 4.6.4-3.4 3.1 1 4.5-4-2.3-4 2.3 1-4.5-3.4-3.1 4.6-.4z"/></svg>
+                PySpark
+              </span>
+              <span class="tech-badge" title="Apache Kafka">
+                <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="3"/><path d="M4 12a8 8 0 0 1 14.9-4M4 12a8 8 0 0 0 14.9 4"/></svg>
+                Kafka
+              </span>
+              <span class="tech-badge" title="Snowflake Data Cloud">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L9.5 7.5 4 8.5l4 4.5L7 19l5-3 5 3-1-6 4-4.5-5.5-1z"/></svg>
+                Snowflake
+              </span>
+              <span class="tech-badge" title="SQL & PostgreSQL">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C7 3 3 5 3 7.5v9C3 19 7 21 12 21s9-2 9-4.5v-9C21 5 17 3 12 3zm0 3c3.9 0 7 1.3 7 1.5S15.9 9 12 9 5 7.7 5 7.5 8.1 6 12 6z"/></svg>
+                SQL
+              </span>
+              <span class="tech-badge" title="AWS & Cloud">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+                AWS
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <!-- Floating Interactive Code Snippet Card -->
+          <div class="floating-code-card">
+            <div class="code-header">
+              <div class="code-header-left">
+                <span class="code-icon">&lt;/&gt;</span>
+                <span class="code-title">pipeline.py</span>
+              </div>
+              <div class="code-status">
+                <span class="status-indicator"></span>
+                <span>streaming</span>
+              </div>
+            </div>
+            <pre class="code-body"><code><span class="token-keyword">from</span> pyspark.sql <span class="token-keyword">import</span> SparkSession
+
+<span class="token-comment"># Distributed Real-Time Streaming</span>
+data_engineer = {
+  <span class="token-prop">"name"</span>: <span class="token-string">"Amit Halder"</span>,
+  <span class="token-prop">"role"</span>: <span class="token-string">"Senior Data Engineer"</span>,
+  <span class="token-prop">"stack"</span>: [<span class="token-string">"PySpark"</span>, <span class="token-string">"Kafka"</span>, <span class="token-string">"Snowflake"</span>, <span class="token-string">"dbt"</span>],
+  <span class="token-prop">"throughput"</span>: <span class="token-string">"10B+ events/day"</span>,
+  <span class="token-prop">"sla_uptime"</span>: <span class="token-number">99.99</span>,
+  <span class="token-prop">"passion"</span>: <span class="token-string">"High-velocity data at scale"</span>
+}</code></pre>
+          </div>
+
+          <!-- Decorative Arrow -->
+          <div class="hero-arrow-indicator" aria-hidden="true">
+            <svg viewBox="0 0 120 70" fill="none">
+              <path d="M15 15 C 50 5, 85 45, 105 50" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-dasharray="4 4" stroke-linecap="round"/>
+              <path d="M98 42 L 108 52 L 95 56" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subtle Scroll Cue -->
+      <div class="scroll-cue">
+        <div class="mouse-icon">
+          <div class="mouse-wheel"></div>
+        </div>
+        <span>Scroll to explore portfolio</span>
+      </div>
+    </section>
+
+
+    <!-- ABOUT ME SECTION -->
+    <section class="section about-section" id="about">
+      <div class="section-container">
+        <div class="about-grid">
+          
+          <div class="about-text-col">
+            <div class="section-tag">ABOUT ME</div>
+            <h2 class="section-title">
+              I'm passionate about creating robust data solutions
+            </h2>
+            <p class="section-body">
+              With 4+ years of hands-on data engineering experience, I help companies turn massive, messy data streams into reliable, sub-second analytical lakehouses. 
+              From architecting real-time Kafka event buses to optimizing distributed PySpark execution graphs, I ensure data arrives clean, tested, and ready for critical business decisions.
+            </p>
+            <a href="#contact" class="btn btn-secondary about-cta">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span>Learn More About Me</span>
+            </a>
+          </div>
+
+          <!-- 2x2 Stats Matrix -->
+          <div class="stats-matrix">
+            <div class="stat-card">
+              <div class="stat-icon-wrap stat-calendar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </div>
+              <div class="stat-number">4+</div>
+              <div class="stat-label">Years Experience</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon-wrap stat-code">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              </div>
+              <div class="stat-number">50+</div>
+              <div class="stat-label">Pipelines Deployed</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon-wrap stat-smile">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+              </div>
+              <div class="stat-number">30+</div>
+              <div class="stat-label">Happy Clients & Teams</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon-wrap stat-trophy">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.45 1-1 1H7v4h10v-4h-2c-.55 0-1-.45-1-1v-2.34"/><path d="M18 4H6v7a6 6 0 0 0 12 0V4z"/></svg>
+              </div>
+              <div class="stat-number">99.9%</div>
+              <div class="stat-label">Data SLA & Uptime</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- MY SKILLS SECTION -->
+    <section class="section skills-section" id="skills">
+      <div class="section-container">
+        <div class="section-header-center">
+          <div class="section-tag">MY SKILLS</div>
+          <h2 class="section-title">Technologies I Master</h2>
+        </div>
+
+        <div class="skills-grid">
+          <!-- Skill Item 1 -->
+          <div class="skill-card">
+            <div class="skill-info">
+              <div class="skill-name-wrap">
+                <span class="skill-badge-icon icon-python">Py</span>
+                <span class="skill-title">Python & PySpark</span>
+              </div>
+              <span class="skill-percent">95%</span>
+            </div>
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" style="--skill-width: 95%;"></div>
+            </div>
+          </div>
+
+          <!-- Skill Item 2 -->
+          <div class="skill-card">
+            <div class="skill-info">
+              <div class="skill-name-wrap">
+                <span class="skill-badge-icon icon-sql">SQL</span>
+                <span class="skill-title">Advanced SQL & Tuning</span>
+              </div>
+              <span class="skill-percent">95%</span>
+            </div>
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" style="--skill-width: 95%;"></div>
+            </div>
+          </div>
+
+          <!-- Skill Item 3 -->
+          <div class="skill-card">
+            <div class="skill-info">
+              <div class="skill-name-wrap">
+                <span class="skill-badge-icon icon-kafka">Kf</span>
+                <span class="skill-title">Apache Kafka & Flink</span>
+              </div>
+              <span class="skill-percent">88%</span>
+            </div>
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" style="--skill-width: 88%;"></div>
+            </div>
+          </div>
+
+          <!-- Skill Item 4 -->
+          <div class="skill-card">
+            <div class="skill-info">
+              <div class="skill-name-wrap">
+                <span class="skill-badge-icon icon-snowflake">Sn</span>
+                <span class="skill-title">Snowflake & BigQuery</span>
+              </div>
+              <span class="skill-percent">92%</span>
+            </div>
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" style="--skill-width: 92%;"></div>
+            </div>
+          </div>
+
+          <!-- Skill Item 5 -->
+          <div class="skill-card">
+            <div class="skill-info">
+              <div class="skill-name-wrap">
+                <span class="skill-badge-icon icon-airflow">Af</span>
+                <span class="skill-title">Apache Airflow & Dagster</span>
+              </div>
+              <span class="skill-percent">90%</span>
+            </div>
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" style="--skill-width: 90%;"></div>
+            </div>
+          </div>
+
+          <!-- Skill Item 6 -->
+          <div class="skill-card">
+            <div class="skill-info">
+              <div class="skill-name-wrap">
+                <span class="skill-badge-icon icon-dbt">dbt</span>
+                <span class="skill-title">dbt (Data Build Tool)</span>
+              </div>
+              <span class="skill-percent">90%</span>
+            </div>
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" style="--skill-width: 90%;"></div>
+            </div>
+          </div>
+
+          <!-- Skill Item 7 -->
+          <div class="skill-card">
+            <div class="skill-info">
+              <div class="skill-name-wrap">
+                <span class="skill-badge-icon icon-aws">AWS</span>
+                <span class="skill-title">AWS & GCP Cloud Stack</span>
+              </div>
+              <span class="skill-percent">85%</span>
+            </div>
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" style="--skill-width: 85%;"></div>
+            </div>
+          </div>
+
+          <!-- Skill Item 8 -->
+          <div class="skill-card">
+            <div class="skill-info">
+              <div class="skill-name-wrap">
+                <span class="skill-badge-icon icon-docker">Dk</span>
+                <span class="skill-title">Docker & Kubernetes</span>
+              </div>
+              <span class="skill-percent">82%</span>
+            </div>
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" style="--skill-width: 82%;"></div>
+            </div>
+          </div>
+
+          <!-- Skill Item 9 -->
+          <div class="skill-card">
+            <div class="skill-info">
+              <div class="skill-name-wrap">
+                <span class="skill-badge-icon icon-git">Git</span>
+                <span class="skill-title">Git & DataOps CI/CD</span>
+              </div>
+              <span class="skill-percent">88%</span>
+            </div>
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" style="--skill-width: 88%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- FEATURED PROJECTS SECTION -->
+    <section class="section projects-section" id="projects">
+      <div class="section-container">
+        <div class="section-header-center">
+          <div class="section-tag">FEATURED PROJECTS</div>
+          <h2 class="section-title">Some of My Recent Work</h2>
+        </div>
+
+        <div class="projects-grid">
+          <!-- Project 01 -->
+          <article class="project-card">
+            <div class="project-card-header">
+              <span class="project-number">01</span>
+              <span class="project-tag-pill">Streaming</span>
+            </div>
+            
+            <div class="project-preview-mockup mockup-streaming">
+              <div class="mockup-header-bar">
+                <span class="mockup-dot red"></span>
+                <span class="mockup-dot yellow"></span>
+                <span class="mockup-dot green"></span>
+                <span class="mockup-title-text">kafka_stream_pipeline.log</span>
+              </div>
+              <div class="mockup-body-visual">
+                <div class="pipeline-node node-in">Kafka Producer</div>
+                <div class="pipeline-flow">→</div>
+                <div class="pipeline-node node-mid">PySpark Core</div>
+                <div class="pipeline-flow">→</div>
+                <div class="pipeline-node node-out">Snowflake Lake</div>
+              </div>
+              <div class="mockup-metric-badge">Throughput: 85,000 evt/s</div>
+            </div>
+
+            <div class="project-body">
+              <h3 class="project-title">Real-Time Event Ingestion Platform</h3>
+              <p class="project-desc">
+                High-throughput distributed streaming architecture consuming 85k events/sec with Apache Kafka, PySpark Structured Streaming, and Delta Lake.
+              </p>
+              <div class="project-tech-tags">
+                <span>PySpark</span>
+                <span>Kafka</span>
+                <span>Delta Lake</span>
+                <span>Airflow</span>
+              </div>
+              <a href="#contact" class="project-link">
+                <span>View Project</span>
+                <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Project 02 -->
+          <article class="project-card">
+            <div class="project-card-header">
+              <span class="project-number">02</span>
+              <span class="project-tag-pill">Lakehouse</span>
+            </div>
+
+            <div class="project-preview-mockup mockup-lakehouse">
+              <div class="mockup-header-bar">
+                <span class="mockup-dot red"></span>
+                <span class="mockup-dot yellow"></span>
+                <span class="mockup-dot green"></span>
+                <span class="mockup-title-text">dbt_models_dag.sql</span>
+              </div>
+              <div class="mockup-body-visual">
+                <div class="dag-tree">
+                  <div class="dag-node">raw_orders</div>
+                  <div class="dag-arrow">↓</div>
+                  <div class="dag-node active">stg_transform_dbt</div>
+                  <div class="dag-arrow">↓</div>
+                  <div class="dag-node">dim_analytics</div>
+                </div>
+              </div>
+              <div class="mockup-metric-badge">120TB Lakehouse Migrated</div>
+            </div>
+
+            <div class="project-body">
+              <h3 class="project-title">Enterprise Cloud Lakehouse & dbt</h3>
+              <p class="project-desc">
+                Modernized legacy Hadoop infrastructure to Snowflake & AWS S3, standardizing 400+ dimensional models with dbt and automated CI test assertions.
+              </p>
+              <div class="project-tech-tags">
+                <span>Snowflake</span>
+                <span>dbt</span>
+                <span>AWS S3</span>
+                <span>PostgreSQL</span>
+              </div>
+              <a href="#contact" class="project-link">
+                <span>View Project</span>
+                <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Project 03 -->
+          <article class="project-card">
+            <div class="project-card-header">
+              <span class="project-number">03</span>
+              <span class="project-tag-pill">MLOps</span>
+            </div>
+
+            <div class="project-preview-mockup mockup-crypto">
+              <div class="mockup-header-bar">
+                <span class="mockup-dot red"></span>
+                <span class="mockup-dot yellow"></span>
+                <span class="mockup-dot green"></span>
+                <span class="mockup-title-text">feature_store_monitor.py</span>
+              </div>
+              <div class="mockup-body-visual">
+                <div class="sparkline-chart">
+                  <div class="bar h-40"></div>
+                  <div class="bar h-60"></div>
+                  <div class="bar h-80"></div>
+                  <div class="bar h-50"></div>
+                  <div class="bar h-95"></div>
+                  <div class="bar h-75"></div>
+                  <div class="bar h-100"></div>
+                </div>
+              </div>
+              <div class="mockup-metric-badge">&lt; 5ms Feature Retrieval</div>
+            </div>
+
+            <div class="project-body">
+              <h3 class="project-title">ML Feature Store & Orchestration</h3>
+              <p class="project-desc">
+                Low-latency online/offline feature store powering machine learning fraud models with Redis cache, Dockerized microservices, and Apache Airflow.
+              </p>
+              <div class="project-tech-tags">
+                <span>Redis</span>
+                <span>Airflow</span>
+                <span>Docker</span>
+                <span>FastAPI</span>
+              </div>
+              <a href="#contact" class="project-link">
+                <span>View Project</span>
+                <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+              </a>
+            </div>
+          </article>
+        </div>
+
+        <div class="projects-dots">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- CONTACT, TESTIMONIAL & FOOTER SECTION -->
+    <section class="section contact-section" id="contact">
+      <div class="section-container">
+        <div class="contact-grid">
+          
+          <!-- Column 1: Call to Action -->
+          <div class="contact-col-cta">
+            <div class="section-tag">LET'S WORK TOGETHER</div>
+            <h2 class="contact-title">Have a data challenge in mind?</h2>
+            <p class="contact-desc">
+              I'm always open to discussing distributed data architectures, pipeline scalability, lakehouse migrations, and consulting opportunities.
+            </p>
+            <a href="mailto:hello@amithalder.dev" class="btn btn-primary contact-cta-btn">
+              <span>Get In Touch</span>
+              <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+            </a>
+          </div>
+
+          <!-- Column 2: Testimonial Card -->
+          <div class="contact-col-testimonial">
+            <div class="testimonial-card">
+              <div class="quote-icon">“</div>
+              <p class="testimonial-quote">
+                Amit Halder is an exceptional data engineer who delivers rock-solid data pipelines on schedule. His deep knowledge of Spark, Kafka, and data modeling transformed our analytics reliability.
+              </p>
+              <div class="testimonial-author">
+                <div class="author-avatar">SJ</div>
+                <div class="author-info">
+                  <div class="author-name">Sarah Johnson</div>
+                  <div class="author-title">VP of Engineering, DataFlow Inc.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 3: Follow Me & Contact Details -->
+          <div class="contact-col-links">
+            <div class="links-title">FOLLOW ME</div>
+            
+            <div class="social-icons-row">
+              <a href="https://github.com" target="_blank" rel="noopener" class="social-icon-btn" title="GitHub">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+              </a>
+              <a href="https://linkedin.com" target="_blank" rel="noopener" class="social-icon-btn" title="LinkedIn">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+              </a>
+              <a href="https://twitter.com" target="_blank" rel="noopener" class="social-icon-btn" title="Twitter / X">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              </a>
+              <a href="https://instagram.com" target="_blank" rel="noopener" class="social-icon-btn" title="Instagram">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              </a>
+            </div>
+
+            <div class="direct-contacts">
+              <a href="mailto:hello@amithalder.dev" class="contact-link-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <span>hello@amithalder.dev</span>
+              </a>
+              <a href="tel:+15551234567" class="contact-link-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span>+1 (555) 123-4567</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Footer Bottom Bar -->
+        <footer class="footer-bar">
+          <div class="footer-left">
+            © 2026 Amit Halder. All rights reserved.
+          </div>
+          <div class="footer-right">
+            Made with <span class="heart-icon">❤️</span> by Amit Halder
+          </div>
+        </footer>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

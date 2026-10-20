@@ -1,19 +1,66 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Amit Halder | Senior Data Engineer Portfolio
 
-# Run and deploy your AI Studio app
+A modern, high-performance personal portfolio website for **Amit Halder**, Senior Data Engineer. Featuring responsive frosted glassmorphism aesthetics and an interactive **300-frame scroll-driven canvas background animation** that scrubs smoothly with inertial physics.
 
-This contains everything you need to run your app locally.
-https://ai.studio/apps/e3799969-2931-4fd7-82eb-210cb5e2400b
+![Portfolio Preview](679ef4554f2f0f691fb8c0f1dd1a65ba.jpg)
 
-## Run Locally
+---
 
-**Prerequisites:**  Node.js
+## 🌟 Key Features
 
+- **Smooth Scroll-Driven Background Animation**:
+  - 300 high-resolution frames rendered onto an HTML5 `<canvas>`.
+  - Linear Interpolation (LERP) physics engine for fluid momentum scrubbing across wheel, trackpad, and touch events.
+  - Nearest-frame fallback to prevent blank flashes.
+  - Automatic `object-fit: cover` scaling with High-DPI / Retina display support.
+- **Modern Glassmorphic UI**:
+  - Dark crimson & obsidian palette tailored to match the photographic backdrop.
+  - Frosted glass cards (`backdrop-filter: blur()`) with subtle glow borders and hover elevation.
+- **Complete Data Engineering Showcase**:
+  - **Hero Section**: Pulsing role badge, bold headline, dual CTAs, tech stack badges, and a floating interactive PySpark streaming code card.
+  - **About Me**: Narrative bio paired with a **2×2 glowing stats matrix** (Years Experience, Pipelines Deployed, Happy Clients, Data SLA & Uptime).
+  - **Technologies I Master (Skills)**: 9 core competencies with animated progress bars (PySpark, SQL, Kafka, Snowflake, Airflow, dbt, AWS, Docker, Git).
+  - **Featured Projects**: Interactive architecture mockups and diagrams for Streaming Ingestion, Lakehouse Migration, and ML Feature Store.
+  - **Social & Contact**: Testimonial quote card, direct email/phone links, and social profile buttons.
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+---
+
+## 🚀 Running Locally
+
+You can run the portfolio locally using any static web server:
+
+### Option 1: Python HTTP Server (Built-in)
+```bash
+# Navigate to project directory
+cd portfolio
+
+# Start server on port 8000
+python -m http.server 8000
+```
+Then open your browser and navigate to:
+👉 `http://localhost:8000/`
+
+### Option 2: Node.js (npx serve)
+```bash
+npx serve .
+```
+
+---
+
+## 📁 Project Structure
+
+```
+portfolio/
+├── ezgif-8a5442510b989641-jpg/   # 300 sequential animation frames (frame_0001.jpg to frame_0300.jpg)
+├── index.html                    # Semantic HTML5 layout and SVG icons
+├── style.css                     # Glassmorphic design system and responsive styles
+├── script.js                     # Canvas frame renderer, preloader, and LERP scroll loop
+├── 679ef4554f2f0f691fb8c0f1dd1a65ba.jpg # Design reference preview
+├── .gitignore                    # Git ignore rules
+└── README.md                     # Documentation
+```
+
+---
+
+## 📜 License
+© 2026 Amit Halder. All rights reserved.
