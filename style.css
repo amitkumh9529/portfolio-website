@@ -845,8 +845,8 @@ body {
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.75rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
 }
 
 .project-card {
@@ -860,12 +860,18 @@ body {
   flex-direction: column;
   gap: 1.25rem;
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.project-card-featured {
+  border-color: rgba(230, 34, 52, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 25px rgba(230, 34, 52, 0.1);
 }
 
 .project-card:hover {
   transform: translateY(-6px);
-  border-color: rgba(230, 34, 52, 0.4);
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 35px rgba(230, 34, 52, 0.18);
+  border-color: rgba(230, 34, 52, 0.45);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 35px rgba(230, 34, 52, 0.22);
 }
 
 .project-card-header {
@@ -890,6 +896,118 @@ body {
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.06);
   color: var(--text-secondary);
+}
+
+.project-tag-pill.featured {
+  background: rgba(230, 34, 52, 0.15);
+  color: #ff6677;
+  border: 1px solid rgba(230, 34, 52, 0.35);
+}
+
+/* Multi-Source RetailPulse Mockup Visual */
+.mockup-multisource {
+  border-radius: 12px;
+  background: rgba(10, 4, 7, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  min-height: 160px;
+}
+
+.multisource-flow-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.source-badges-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.source-tag-item {
+  font-size: 0.68rem;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 5px;
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  white-space: nowrap;
+}
+
+.source-tag-item.pos {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+.source-tag-item.threepl {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+.flow-hub {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.hub-arrow {
+  color: var(--accent-red);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.hub-label {
+  font-size: 0.65rem;
+  font-family: var(--font-mono);
+  padding: 0.2rem 0.45rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  white-space: nowrap;
+}
+
+.target-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.target-badge {
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  background: rgba(230, 34, 52, 0.18);
+  color: #ff5566;
+  border: 1px solid rgba(230, 34, 52, 0.4);
+  white-space: nowrap;
+}
+
+.marts-label {
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  text-align: center;
+}
+
+.github-link-icon {
+  width: 17px;
+  height: 17px;
+  margin-right: 0.25rem;
 }
 
 .project-preview-mockup {

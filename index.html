@@ -374,10 +374,66 @@ data_engineer = {
         </div>
 
         <div class="projects-grid">
-          <!-- Project 01 -->
-          <article class="project-card">
+          <!-- Project 01: RetailPulse (Flagship) -->
+          <article class="project-card project-card-featured">
             <div class="project-card-header">
               <span class="project-number">01</span>
+              <span class="project-tag-pill featured">Production ELT</span>
+            </div>
+            
+            <div class="project-preview-mockup mockup-multisource">
+              <div class="mockup-header-bar">
+                <span class="mockup-dot red"></span>
+                <span class="mockup-dot yellow"></span>
+                <span class="mockup-dot green"></span>
+                <span class="mockup-title-text">retailpulse_elt_dag.py</span>
+              </div>
+              <div class="mockup-body-visual">
+                <div class="multisource-flow-container">
+                  <div class="source-badges-col">
+                    <span class="source-tag-item">REST API (429 DLQ)</span>
+                    <span class="source-tag-item pos">POS PostgreSQL</span>
+                    <span class="source-tag-item threepl">3PL CSV Drops</span>
+                  </div>
+                  <div class="flow-hub">
+                    <span class="hub-arrow">→</span>
+                    <span class="hub-label">AWS S3 Snappy</span>
+                    <span class="hub-arrow">→</span>
+                  </div>
+                  <div class="target-col">
+                    <div class="target-badge">Snowflake + dbt</div>
+                    <div class="marts-label">Marts (Merge & Clusters)</div>
+                  </div>
+                </div>
+              </div>
+              <div class="mockup-metric-badge">120 Stores · Zero-Loss DLQ · Airflow</div>
+            </div>
+
+            <div class="project-body">
+              <h3 class="project-title">RetailPulse: Omnichannel Batch ELT Pipeline</h3>
+              <p class="project-desc">
+                Enterprise batch ELT pipeline unifying REST APIs, Supabase PostgreSQL, and 3PL logistics drops into AWS S3 and Snowflake with stateful high-watermark extraction, dbt transformations, and automated data quality gates.
+              </p>
+              <div class="project-tech-tags">
+                <span>Snowflake</span>
+                <span>dbt</span>
+                <span>Apache Airflow</span>
+                <span>AWS S3</span>
+                <span>Python</span>
+                <span>PostgreSQL</span>
+              </div>
+              <a href="https://github.com/amitkumh9529/Retail-multi-source-DE" target="_blank" rel="noopener" class="project-link">
+                <svg class="github-link-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                <span>View on GitHub</span>
+                <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Project 02: Streaming Engine -->
+          <article class="project-card">
+            <div class="project-card-header">
+              <span class="project-number">02</span>
               <span class="project-tag-pill">Streaming</span>
             </div>
             
@@ -410,16 +466,16 @@ data_engineer = {
                 <span>Airflow</span>
               </div>
               <a href="#contact" class="project-link">
-                <span>View Project</span>
+                <span>View Architecture</span>
                 <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
               </a>
             </div>
           </article>
 
-          <!-- Project 02 -->
+          <!-- Project 03: Lakehouse & dbt -->
           <article class="project-card">
             <div class="project-card-header">
-              <span class="project-number">02</span>
+              <span class="project-number">03</span>
               <span class="project-tag-pill">Lakehouse</span>
             </div>
 
@@ -454,16 +510,16 @@ data_engineer = {
                 <span>PostgreSQL</span>
               </div>
               <a href="#contact" class="project-link">
-                <span>View Project</span>
+                <span>View Architecture</span>
                 <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
               </a>
             </div>
           </article>
 
-          <!-- Project 03 -->
+          <!-- Project 04: ML Feature Store -->
           <article class="project-card">
             <div class="project-card-header">
-              <span class="project-number">03</span>
+              <span class="project-number">04</span>
               <span class="project-tag-pill">MLOps</span>
             </div>
 
@@ -500,7 +556,7 @@ data_engineer = {
                 <span>FastAPI</span>
               </div>
               <a href="#contact" class="project-link">
-                <span>View Project</span>
+                <span>View Architecture</span>
                 <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
               </a>
             </div>
@@ -509,6 +565,7 @@ data_engineer = {
 
         <div class="projects-dots">
           <span class="dot active"></span>
+          <span class="dot"></span>
           <span class="dot"></span>
           <span class="dot"></span>
         </div>
