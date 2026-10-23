@@ -17,11 +17,11 @@ A modern, high-performance personal portfolio website for **Amit Halder**, Data 
   - Continuous animated RGB/rainbow glow smoothly cycling through neon accents (crimson, flame amber, emerald, electric cyan, royal violet).
   - Frosted glass cards (`backdrop-filter: blur()`) with dynamic glow borders and hover elevation.
 - **Complete Data Engineering Showcase**:
-  - **Hero Section**: Pulsing role badge, bold headline, dual CTAs, tech stack badges, and a floating interactive PySpark streaming code card.
-  - **About Me**: Narrative bio paired with a **2×2 glowing stats matrix** (Years Experience, Pipelines Deployed, Happy Clients, Data SLA & Uptime).
+  - **Hero Section**: Pulsing role badge, bold headline, direct GitHub & LinkedIn buttons, tech stack badges, and a floating interactive PySpark streaming code card.
+  - **About Me**: Professional narrative detailing mathematical rigor (M.Sc. Mathematics, SVNIT 2025) translated to distributed lakehouse engineering, paired with an authentic glowing stats matrix.
   - **Technologies I Master (Skills)**: 9 core competencies with animated progress bars (PySpark, SQL, Kafka, Snowflake, Airflow, dbt, AWS, Docker, Git).
-  - **Featured Projects**: Interactive architecture mockups and diagrams for **RetailPulse: Omnichannel Batch ELT Pipeline** ([GitHub](https://github.com/amitkumh9529/Retail-multi-source-DE)), **Real-Time Mobility & Traffic Lakehouse** ([GitHub](https://github.com/amitkumh9529/Real-time-traffic-DE)), **FraudShield: Real-Time Fraud Detection Lakehouse** ([GitHub](https://github.com/amitkumh9529/Real-Time-Streaming-DE-Project-FraudShield)), and ML Feature Store.
-  - **Social & Contact**: Testimonial quote card, direct email/phone links, and social profile buttons.
+  - **Featured Projects**: Interactive architecture mockups and diagrams for **RetailPulse: Omnichannel Batch ELT Pipeline** ([GitHub](https://github.com/amitkumh9529/Retail-multi-source-DE)), **Real-Time Mobility & Traffic Lakehouse** ([GitHub](https://github.com/amitkumh9529/Real-time-traffic-DE)), and **FraudShield: Real-Time Fraud Detection Lakehouse** ([GitHub](https://github.com/amitkumh9529/Real-Time-Streaming-DE-Project-FraudShield)).
+  - **Social & Contact**: Testimonial card, direct email (`amith3169@gmail.com`), phone (`+91 9328445325`), and profile links ([GitHub](https://github.com/amitkumh9529) | [LinkedIn](https://www.linkedin.com/in/amit-halder-8b2179197/)).
 
 ---
 
