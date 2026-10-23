@@ -1004,6 +1004,90 @@ body {
   text-align: center;
 }
 
+/* Real-Time Traffic Lakehouse Mockup Visual */
+.mockup-traffic {
+  border-radius: 12px;
+  background: rgba(10, 4, 7, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  min-height: 160px;
+}
+
+.traffic-flow-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  width: 100%;
+}
+
+.traffic-stage-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.stage-badge-item {
+  font-size: 0.68rem;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  padding: 0.25rem 0.45rem;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+.stage-badge-item.kafka {
+  background: rgba(230, 34, 52, 0.15);
+  color: #ff6677;
+  border: 1px solid rgba(230, 34, 52, 0.35);
+}
+
+.stage-badge-item.bronze {
+  background: rgba(217, 119, 6, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(217, 119, 6, 0.35);
+}
+
+.stage-badge-item.silver {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+}
+
+.stage-badge-item.gold {
+  background: rgba(234, 179, 8, 0.2);
+  color: #fde047;
+  border: 1px solid rgba(234, 179, 8, 0.45);
+}
+
+.traffic-arrow {
+  color: var(--accent-red);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.traffic-sublabel {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  text-align: center;
+}
+
+.traffic-quarantine-subtag {
+  font-size: 0.58rem;
+  font-family: var(--font-mono);
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px dashed rgba(239, 68, 68, 0.3);
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
 .github-link-icon {
   width: 17px;
   height: 17px;

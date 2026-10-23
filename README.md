@@ -20,7 +20,7 @@ A modern, high-performance personal portfolio website for **Amit Halder**, Data 
   - **Hero Section**: Pulsing role badge, bold headline, dual CTAs, tech stack badges, and a floating interactive PySpark streaming code card.
   - **About Me**: Narrative bio paired with a **2×2 glowing stats matrix** (Years Experience, Pipelines Deployed, Happy Clients, Data SLA & Uptime).
   - **Technologies I Master (Skills)**: 9 core competencies with animated progress bars (PySpark, SQL, Kafka, Snowflake, Airflow, dbt, AWS, Docker, Git).
-  - **Featured Projects**: Interactive architecture mockups and diagrams for **RetailPulse: Omnichannel Batch ELT Pipeline** ([GitHub](https://github.com/amitkumh9529/Retail-multi-source-DE)), Real-Time Streaming Ingestion, Lakehouse Migration, and ML Feature Store.
+  - **Featured Projects**: Interactive architecture mockups and diagrams for **RetailPulse: Omnichannel Batch ELT Pipeline** ([GitHub](https://github.com/amitkumh9529/Retail-multi-source-DE)), **Real-Time Mobility & Traffic Lakehouse** ([GitHub](https://github.com/amitkumh9529/Real-time-traffic-DE)), Enterprise Cloud Lakehouse & dbt, and ML Feature Store.
   - **Social & Contact**: Testimonial quote card, direct email/phone links, and social profile buttons.
 
 ---
