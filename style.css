@@ -42,6 +42,8 @@
 .tech-badge svg,
 .hub-arrow,
 .traffic-arrow,
+.fraud-flow-arrow,
+.fraud-alert-badge,
 .loader-spinner,
 .loader-fill {
   animation: rainbowHueCycle 12s linear infinite !important;
@@ -1128,6 +1130,119 @@ body {
   border: 1px dashed rgba(239, 68, 68, 0.3);
   padding: 0.1rem 0.3rem;
   border-radius: 3px;
+  white-space: nowrap;
+}
+
+/* FraudShield Real-Time Lakehouse Mockup Visual */
+.mockup-fraudshield {
+  border-radius: 12px;
+  background: rgba(10, 4, 7, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  min-height: 160px;
+}
+
+.fraudshield-flow-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.fraud-source-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.fraud-badge-source {
+  font-size: 0.65rem;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  padding: 0.2rem 0.45rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.fraud-badge-source.kafka {
+  background: rgba(230, 34, 52, 0.15);
+  color: #ff6677;
+  border: 1px solid rgba(230, 34, 52, 0.35);
+}
+
+.fraud-badge-source.pg {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.fraud-badge-source.autoloader {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.fraud-flow-arrow {
+  color: var(--accent-red);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.fraud-engine-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.fraud-dlt-badge {
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  background: rgba(99, 102, 241, 0.2);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  white-space: nowrap;
+}
+
+.fraud-subrule {
+  font-size: 0.58rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.fraud-alert-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.fraud-alert-badge {
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  padding: 0.3rem 0.55rem;
+  border-radius: 6px;
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  white-space: nowrap;
+}
+
+.fraud-alert-dest {
+  font-size: 0.58rem;
+  color: #34d399;
+  font-family: var(--font-mono);
+  text-align: center;
   white-space: nowrap;
 }
 
