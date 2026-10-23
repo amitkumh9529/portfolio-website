@@ -13,9 +13,9 @@ A modern, high-performance personal portfolio website for **Amit Halder**, Data 
   - Linear Interpolation (LERP) physics engine for fluid momentum scrubbing across wheel, trackpad, and touch events.
   - Nearest-frame fallback to prevent blank flashes.
   - Automatic `object-fit: cover` scaling with High-DPI / Retina display support.
-- **Modern Glassmorphic UI**:
-  - Dark crimson & obsidian palette tailored to match the photographic backdrop.
-  - Frosted glass cards (`backdrop-filter: blur()`) with subtle glow borders and hover elevation.
+- **Modern Glassmorphic UI with Dynamic Animated RGB Theme**:
+  - Continuous animated RGB/rainbow glow smoothly cycling through neon accents (crimson, flame amber, emerald, electric cyan, royal violet).
+  - Frosted glass cards (`backdrop-filter: blur()`) with dynamic glow borders and hover elevation.
 - **Complete Data Engineering Showcase**:
   - **Hero Section**: Pulsing role badge, bold headline, dual CTAs, tech stack badges, and a floating interactive PySpark streaming code card.
   - **About Me**: Narrative bio paired with a **2×2 glowing stats matrix** (Years Experience, Pipelines Deployed, Happy Clients, Data SLA & Uptime).

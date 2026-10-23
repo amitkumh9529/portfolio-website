@@ -294,13 +294,64 @@
     }
   });
 
+  // Continuous Animated RGB/Rainbow Theme Hue Shift
+  function initThemeColorCycle() {
+    let currentHue = 355;
+    let lastThemeTime = performance.now();
+    // 30 degrees per second -> vibrant full rainbow transition in 12 seconds
+    const HUE_SPEED_DEG_PER_SEC = 30;
+    const rootStyle = document.documentElement.style;
+
+    function stepThemeHue(timestamp) {
+      const deltaSeconds = (timestamp - lastThemeTime) / 1000;
+      lastThemeTime = timestamp;
+
+      currentHue = (currentHue + HUE_SPEED_DEG_PER_SEC * deltaSeconds) % 360;
+      const h = currentHue.toFixed(1);
+      const hAlt = ((currentHue + 40) % 360).toFixed(1);
+
+      const colorMain = `hsl(${h}, 94%, 58%)`;
+      const colorGlow = `hsla(${h}, 94%, 58%, 0.45)`;
+      const colorSoft = `hsla(${h}, 94%, 58%, 0.16)`;
+      const colorBorder = `hsla(${h}, 94%, 58%, 0.4)`;
+      const colorAlt = `hsl(${hAlt}, 96%, 62%)`;
+      const colorDark = `hsl(${h}, 90%, 38%)`;
+
+      rootStyle.setProperty('--theme-hue', h);
+      rootStyle.setProperty('--accent-theme', colorMain);
+      rootStyle.setProperty('--accent-theme-glow', colorGlow);
+      rootStyle.setProperty('--accent-theme-soft', colorSoft);
+      rootStyle.setProperty('--accent-theme-border', colorBorder);
+      rootStyle.setProperty('--accent-theme-alt', colorAlt);
+      rootStyle.setProperty('--accent-theme-dark', colorDark);
+
+      // Direct aliases so all elements and gradients update simultaneously
+      rootStyle.setProperty('--accent-red', colorMain);
+      rootStyle.setProperty('--accent-red-glow', colorGlow);
+      rootStyle.setProperty('--border-glass-glow', colorBorder);
+
+      requestAnimationFrame(stepThemeHue);
+    }
+
+    requestAnimationFrame(stepThemeHue);
+  }
+
+  // Start RGB theme cycling immediately
+  initThemeColorCycle();
+
   // Initialization
-  window.addEventListener('DOMContentLoaded', () => {
+  function initApp() {
     resizeCanvas();
     preloadAllFrames();
     setupSkillBarsObserver();
     setupProjectDots();
     requestAnimationFrame(animate);
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', initApp);
+  } else {
+    initApp();
+  }
 
 })();
